@@ -6,6 +6,7 @@ import datetime
 import glob
 import os
 import re
+import math
 
 CHANNEL_ID = CHANNEL_ID
 
@@ -31,6 +32,13 @@ class MisheBot(discord.Client):
                 exit()
             if message.content == "/reset":
                 self.history = []
+                return
+            if message.content.startswith("/rollup"):
+                indexes = re.findall(r'\d+$', message.content)
+                if len(indexes) != 0:
+                    length = math.floor( int(str(indexes[-1]))/100.0 * len(self.history) )
+                    print("rollup:",length)
+                    self.history = self.history[length:]
                 return
             if message.content.startswith("/restore"):
                 indexes = re.findall(r'\d+$', message.content)
